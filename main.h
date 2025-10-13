@@ -27,4 +27,8 @@ void task3_round_robin_col(void);
 void dependency(void);
 void swap(int* a, int* b);
 
+void memory_model(void);
+void reduction(void);
+void inner_product(void);
+
 #endif

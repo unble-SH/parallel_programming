@@ -1,6 +1,5 @@
 ﻿#include"main.h"
 
 int main(void) {
-	dependency();
-
+	inner_product();
 }
