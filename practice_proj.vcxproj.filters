@@ -18,10 +18,16 @@
     <ClCompile Include="main.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="3week_multi_thread.c">
+    <ClCompile Include="4week_multi_thread.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="2week_parallel_pro.c">
+    <ClCompile Include="3week_parallel_pro.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="5week_dependency.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="7week_memory_model.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
