@@ -107,6 +107,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <StackReserveSize>1000000000</StackReserveSize>
+      <StackCommitSize>1000000000</StackCommitSize>
+      <HeapCommitSize>100000</HeapCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -124,10 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="10week_synchronization.c" />
+    <ClCompile Include="11week_cache.c" />
     <ClCompile Include="3week_parallel_pro.c" />
     <ClCompile Include="4week_multi_thread.c" />
     <ClCompile Include="5week_dependency.c" />
     <ClCompile Include="7week_memory_model.c" />
+    <ClCompile Include="9week_synchronization.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>

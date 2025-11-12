@@ -30,6 +30,15 @@
     <ClCompile Include="7week_memory_model.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="9week_synchronization.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="10week_synchronization.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="11week_cache.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
