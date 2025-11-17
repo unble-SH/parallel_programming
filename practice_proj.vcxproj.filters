@@ -39,6 +39,9 @@
     <ClCompile Include="11week_cache.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="12week_load_balancing.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">

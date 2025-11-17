@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="10week_synchronization.c" />
     <ClCompile Include="11week_cache.c" />
+    <ClCompile Include="12week_load_balancing.c" />
     <ClCompile Include="3week_parallel_pro.c" />
     <ClCompile Include="4week_multi_thread.c" />
     <ClCompile Include="5week_dependency.c" />

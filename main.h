@@ -20,7 +20,7 @@
 #define THREADS 4
 
 /*9week*/
-#define MAX 10000000
+#define MAX 5000000
 
 /*11week*/
 #define SIZE 8000
@@ -55,5 +55,11 @@ void mxv_serial(float (*matrix_d)[COLS], float* vector, float* result, int nocol
 void do_prac8_code2_serial(void);																	//false sharing 해결X 직렬
 void mxv_clear(float (*matrix_d)[COLS], float* vector, float* result, int nocol, int norow);		//false sharing 해결O 병렬
 void do_prac8_code2_clear(void);																	//false sharing 해결O 병렬
+
+//12week
+void prac9(void);
+void prac9_sch(void);
+void run_test(const char* name, const char* sched_type, int chunk, double* x, double* y);
+void assignment_main(void);
 
 #endif
