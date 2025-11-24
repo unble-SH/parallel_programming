@@ -59,7 +59,6 @@ void do_prac8_code2_clear(void);																	//false sharing 해결O 병렬
 //12week
 void prac9(void);
 void prac9_sch(void);
-void run_test(const char* name, const char* sched_type, int chunk, double* x, double* y);
 void assignment_main(void);
 
 #endif

@@ -70,84 +70,126 @@ void prac9_sch(void)
 
 
 //assignment. compare 5 case
-void run_test(const char* name, const char* sched_type, int chunk, double* x, double* y)
-{
-    double dot_product = 0.0;
-    double start_time, end_time;
-
-    // 스케줄 설정 문자열 생성
-    printf("\n===== %s =====\n", name);
-
-    start_time = omp_get_wtime();
-
-#pragma omp parallel num_threads(4) reduction(+:dot_product)
-    {
-        if (chunk == 0) {
-#pragma omp for schedule(static)
-            for (int i = 0; i < MAX; i++) {
-                x[i] = sqrt(x[i]);
-                y[i] = sqrt(y[i]);
-                dot_product += x[i] + y[i];
-            }
-        }
-        else {
-            // chunk 포함한 schedule 방식
-            if (sched_type == "static") {
-#pragma omp for schedule(static, chunk)
-                for (int i = 0; i < MAX; i++) {
-                    x[i] = sqrt(x[i]);
-                    y[i] = sqrt(y[i]);
-                    dot_product += x[i] + y[i];
-                }
-            }
-            else if (sched_type == "dynamic") {
-#pragma omp for schedule(dynamic, chunk)
-                for (int i = 0; i < MAX; i++) {
-                    x[i] = sqrt(x[i]);
-                    y[i] = sqrt(y[i]);
-                    dot_product += x[i] + y[i];
-                }
-            }
-            else if (sched_type == "guided") {
-#pragma omp for schedule(guided, chunk)
-                for (int i = 0; i < MAX; i++) {
-                    x[i] = sqrt(x[i]);
-                    y[i] = sqrt(y[i]);
-                    dot_product += x[i] + y[i];
-                }
-            }
-        }
-    }
-
-    end_time = omp_get_wtime();
-    printf("%s time = %f sec\n", name, end_time - start_time);
-    printf("%s dot_product = %.0f\n", name, dot_product);
-}
 
 void assignment_main(void)
 {
-    static double x[MAX], y[MAX];
+    double x[MAX], y[MAX];
+    double dot_product;
+    double start_time, end_time, elapsed_time;
+    int i;
 
-    // 초기화
-    for (int i = 0; i < MAX; i++) {
-        x[i] = (double)i + 10.0;
-        y[i] = (double)MAX - i;
+    /* 1. 벡터 초기화 (입력 데이터 고정) */
+    for (i = 0; i < MAX; i++) {
+        x[i] = (double)i + 10.0;      /* 증가하는 패턴 */
+        y[i] = (double)MAX - i;       /* 감소하는 패턴 */
     }
 
-    // 5가지 실험 자동 수행
-    run_test("1. static(default)", "static", 0, x, y);
+    /* 사용할 스레드 수 고정 */
+    omp_set_num_threads(4);
 
-    // 초기화 다시 (값 변경되니까!)
-    for (int i = 0; i < MAX; i++) { x[i] = (double)i + 10.0; y[i] = (double)MAX - i; }
-    run_test("2. static(100)", "static", 100, x, y);
+    /* =========================
+       1. static (기본 스케줄)
+       ========================= */
+    dot_product = 0.0;
 
-    for (int i = 0; i < MAX; i++) { x[i] = (double)i + 10.0; y[i] = (double)MAX - i; }
-    run_test("3. dynamic(default)", "dynamic", 1, x, y);
+    start_time = omp_get_wtime();
 
-    for (int i = 0; i < MAX; i++) { x[i] = (double)i + 10.0; y[i] = (double)MAX - i; }
-    run_test("4. dynamic(100)", "dynamic", 100, x, y);
+#pragma omp parallel for reduction(+:dot_product) schedule(static)
+    for (i = 0; i < MAX; i++) {
+        double xi = sqrt(x[i]);
+        double yi = sqrt(y[i]);
+        dot_product += (xi + yi);
+    }
 
-    for (int i = 0; i < MAX; i++) { x[i] = (double)i + 10.0; y[i] = (double)MAX - i; }
-    run_test("5. guided(100)", "guided", 100, x, y);
+    end_time = omp_get_wtime();
+    elapsed_time = end_time - start_time;
+
+    printf("===== 1. static =====\n");
+    printf("1. static time = %f sec\n", elapsed_time);
+    printf("1. static dot_product = %.0f\n\n", dot_product);
+
+    /* =========================
+       2. dynamic (기본 chunk)
+       ========================= */
+    dot_product = 0.0;
+    start_time = omp_get_wtime();
+
+#pragma omp parallel for reduction(+:dot_product) schedule(dynamic)
+    for (i = 0; i < MAX; i++) {
+        double xi = sqrt(x[i]);
+        double yi = sqrt(y[i]);
+        dot_product += (xi + yi);
+    }
+
+    end_time = omp_get_wtime();
+    elapsed_time = end_time - start_time;
+
+    printf("===== 2. dynamic =====\n");
+    printf("2. dynamic time = %f sec\n", elapsed_time);
+    printf("2. dynamic dot_product = %.0f\n\n", dot_product);
+
+    /* =========================
+       3. auto
+       ========================= */
+    dot_product = 0.0;
+    start_time = omp_get_wtime();
+
+#pragma omp parallel for reduction(+:dot_product) schedule(auto)
+    for (i = 0; i < MAX; i++) {
+        double xi = sqrt(x[i]);
+        double yi = sqrt(y[i]);
+        dot_product += (xi + yi);
+    }
+
+    end_time = omp_get_wtime();
+    elapsed_time = end_time - start_time;
+
+    printf("===== 3. auto =====\n");
+    printf("3. auto time = %f sec\n", elapsed_time);
+    printf("3. auto dot_product = %.0f\n\n", dot_product);
+
+    /* =========================
+       4. runtime
+       - omp_set_schedule로
+         dynamic, 100 설정 후 사용
+       ========================= */
+    omp_set_schedule(omp_sched_dynamic, 100);
+
+    dot_product = 0.0;
+    start_time = omp_get_wtime();
+
+#pragma omp parallel for reduction(+:dot_product) schedule(runtime)
+    for (i = 0; i < MAX; i++) {
+        double xi = sqrt(x[i]);
+        double yi = sqrt(y[i]);
+        dot_product += (xi + yi);
+    }
+
+    end_time = omp_get_wtime();
+    elapsed_time = end_time - start_time;
+
+    printf("===== 4. runtime (dynamic,100) =====\n");
+    printf("4. runtime time = %f sec\n", elapsed_time);
+    printf("4. runtime dot_product = %.0f\n\n", dot_product);
+
+    /* =========================
+       5. guided(100)
+       ========================= */
+    dot_product = 0.0;
+    start_time = omp_get_wtime();
+
+#pragma omp parallel for reduction(+:dot_product) schedule(guided, 100)
+    for (i = 0; i < MAX; i++) {
+        double xi = sqrt(x[i]);
+        double yi = sqrt(y[i]);
+        dot_product += (xi + yi);
+    }
+
+    end_time = omp_get_wtime();
+    elapsed_time = end_time - start_time;
+
+    printf("===== 5. guided(100) =====\n");
+    printf("5. guided(100) time = %f sec\n", elapsed_time);
+    printf("5. guided(100) dot_product = %.0f\n\n", dot_product);
 
 }
