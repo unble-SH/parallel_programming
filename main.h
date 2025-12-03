@@ -61,4 +61,8 @@ void prac9(void);
 void prac9_sch(void);
 void assignment_main(void);
 
+//13week
+void subtask();
+void single();
+
 #endif

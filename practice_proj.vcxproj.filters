@@ -42,6 +42,9 @@
     <ClCompile Include="12week_load_balancing.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="13week_task_parallel.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
